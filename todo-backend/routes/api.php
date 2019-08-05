@@ -31,3 +31,6 @@ Route::group([
     Route::post('me', 'AuthController@me');
 
 });
+Route::get('/gettodos', 'TodoController@index');
+Route::resource('todo', 'TodoController');
+
