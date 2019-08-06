@@ -31,6 +31,7 @@ Route::group([
     Route::post('me', 'AuthController@me');
 
 });
-Route::get('/gettodos', 'TodoController@index');
-Route::resource('todo', 'TodoController');
+
+Route::post('register', 'RegisterController@create');
+Route::resource('todo', 'TodoController')->middleware('jwt.auth');
 

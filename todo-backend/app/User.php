@@ -13,6 +13,10 @@ class User extends Authenticatable implements JWTSubject
 
     public $timestamps = false;
 
+    public function todos(){
+        return $this->hasMany('App\Todo');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
