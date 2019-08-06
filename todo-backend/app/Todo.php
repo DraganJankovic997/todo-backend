@@ -10,6 +10,8 @@ class Todo extends Model
         return $this->belongsTo('App\User');
     }
 
+    const ARRAY = ['LOW', 'MEDIUM', 'HIGH'];
+
     public $timestamps = false;
 
     protected $guarded = ['id'];
