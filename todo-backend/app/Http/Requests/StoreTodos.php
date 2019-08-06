@@ -11,9 +11,11 @@ class StoreTodos extends FormRequest
     }
     public function rules()
     {
+        $arr = ['LOW', 'MEDIUM', 'HIGH'];
         return [
-            'do' => 'required|max:255',
-            'untill' => 'required',
+            'title' => 'required|max:40',
+            'description' => 'nullable|max:255',
+            'priority'=>'required|in:LOW,MEDIUM,HIGH',
         ];
     }
 }

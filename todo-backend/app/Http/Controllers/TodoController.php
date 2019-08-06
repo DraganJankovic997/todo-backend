@@ -15,15 +15,14 @@ class TodoController extends Controller
         return Auth::user()->todos;
     }
 
-    public function show($id){
-        $todo = Todo::findOrFail($id);
+    public function show(Todo $todo){
         $this->authorize('view', $todo);
         return $todo;
     }
 
     public function store(StoreTodos $request)
     {
-        Todo::create(array_merge(['user_id' => Auth::id()], $request->validated()));
+        return Todo::create(array_merge(['user_id'=>Auth::id()], $request->validated()));
     }
 
     public function update(UpdateTodos $request, Todo $todo)
@@ -33,11 +32,10 @@ class TodoController extends Controller
         return $todo;
     }
 
-    public function destroy($id)
+    public function destroy(Todo $todo)
     {
-        $todoDelete = Todo::findOrFail($id);
-        $this->authorize('delete', $todoDelete);
-        $todoDelete->delete();
+        $this->authorize('delete', $todo);
+        $todo->delete();
 
     }
 }
