@@ -9,15 +9,18 @@ use App\Todo as Todo;
 
 class TodoController extends Controller
 {
-
     /**
      * @var TodoService
      */
     private $todoService;
 
-    function __construct()
+    /**
+     * @var TodoService
+     */
+
+    public function __construct(TodoService $todoService)
     {
-        $this->todoService = new TodoService();
+        $this->todoService = $todoService;
     }
 
     public function index()
