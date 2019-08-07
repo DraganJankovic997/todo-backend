@@ -18,7 +18,8 @@ class RegisterController extends Controller
 
     public function create(UserRegistration $request)
     {
-        return $this->userService->register($request);
+        $valid = $request->validated();
+        return $this->userService->register($valid);
     }
 
 

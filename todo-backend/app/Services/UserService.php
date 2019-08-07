@@ -11,27 +11,25 @@ use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
-    public function login(Request $request)
+    public function login($credentials)
     {
-        $credentials = $request->only('email', 'password');
 
         if ($token = $this->guard()->attempt($credentials)) {
             return $this->respondWithToken($token);
         }
 
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return ['error' => 'Unauthorized'];
     }
 
     public function me()
     {
-        return response()->json($this->guard()->user());
+        return $this->guard()->user();
     }
 
     public function logout()
     {
         $this->guard()->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
+        return ['message' => 'Successfully logged out'];
     }
 
     public function refresh()
@@ -39,23 +37,25 @@ class UserService
         return $this->respondWithToken($this->guard()->refresh());
     }
 
-    public function register(UserRegistration $request)
+    public function register($valid)
     {
-        $user = $request->validated();
-        $user['password'] = bcrypt($user['password']);
-        User::create($user);
+        $cred = [
+            'email' => $valid['email'],
+            'password' => $valid['password']
+        ];
+        $valid['password'] = bcrypt($valid['password']);
+        User::create($valid);
 
-        return $this->login($request);
+        return $this->login($cred);
     }
-
 
     protected function respondWithToken($token)
     {
-        return response()->json([
+        return [
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => $this->guard()->factory()->getTTL() * 60
-        ]);
+        ];
     }
 
     public function guard()
