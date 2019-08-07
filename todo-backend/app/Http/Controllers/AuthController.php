@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Contract\UserContract;
 use Illuminate\Http\Request;
-use App\Services\UserService as UserService;
 
 class AuthController extends Controller
 {
@@ -15,7 +15,7 @@ class AuthController extends Controller
 
     private $userService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserContract $userService)
     {
         $this->middleware('auth:api', ['except' => ['login']]);
         $this->userService = $userService;
@@ -31,9 +31,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        return $credentials;
         return $this->respond($this->userService->login($credentials));
-
     }
 
     /**

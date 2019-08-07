@@ -3,9 +3,10 @@
 
 namespace App\Services;
 
+use App\Contract\TodoContract as TodoContract;
 use App\Todo as Todo;
 
-class TodoService
+class TodoService implements TodoContract
 {
     public function getAll($user)
     {
@@ -31,6 +32,7 @@ class TodoService
     public function delete(Todo $todo)
     {
         $todo->delete();
+        return $todo;
     }
 
 

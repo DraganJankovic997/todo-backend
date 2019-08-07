@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\UserService;
+use App\Contract\UserContract;
 use App\Http\Requests\UserRegistration;
 
 class RegisterController extends Controller
@@ -11,7 +11,7 @@ class RegisterController extends Controller
 
     private $userService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserContract $userService)
     {
         $this->userService = $userService;
     }

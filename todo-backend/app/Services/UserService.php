@@ -3,13 +3,12 @@
 
 namespace App\Services;
 
-use App\Http\Requests\UserRegistration;
 use App\User as User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Contract\UserContract as UserContract;
 
 
-class UserService
+class  UserService implements UserContract
 {
     public function login($credentials)
     {
@@ -18,7 +17,7 @@ class UserService
             return $this->respondWithToken($token);
         }
 
-        return ['error' => 'Unauthorized'];
+        return abort(401);
     }
 
     public function me()
@@ -39,12 +38,18 @@ class UserService
 
     public function register($valid)
     {
-        $cred = [
-            'email' => $valid['email'],
-            'password' => $valid['password']
-        ];
-        $valid['password'] = bcrypt($valid['password']);
-        User::create($valid);
+        try
+        {
+            $cred = [
+                'email' => $valid['email'],
+                'password' => $valid['password']
+            ];
+            $valid['password'] = bcrypt($valid['password']);
+            User::create($valid);
+        } catch (\Exception $e)
+        {
+            return $e->getMessage();
+        }
 
         return $this->login($cred);
     }

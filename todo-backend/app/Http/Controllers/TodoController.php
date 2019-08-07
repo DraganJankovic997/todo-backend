@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Contract\TodoContract;
 use App\Http\Requests\StoreTodos;
 use App\Http\Requests\UpdateTodos;
-use App\Services\TodoService;
 use App\Todo as Todo;
 use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
-    /**
-     * @var TodoService
-     */
+
     private $todoService;
 
-    /**
-     * @var TodoService
-     */
 
-    public function __construct(TodoService $todoService)
+    public function __construct(TodoContract $todoService)
     {
         $this->todoService = $todoService;
     }
@@ -50,6 +45,6 @@ class TodoController extends Controller
     public function destroy(Todo $todo)
     {
         $this->authorize('delete', $todo);
-        $this->todoService->delete($todo);
+        return $this->todoService->delete($todo);
     }
 }
