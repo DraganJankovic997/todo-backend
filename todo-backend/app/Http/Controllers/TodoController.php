@@ -4,38 +4,44 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTodos;
 use App\Http\Requests\UpdateTodos;
-use Illuminate\Support\Facades\Auth;
+use App\Services\TodoService;
 use App\Todo as Todo;
 
 class TodoController extends Controller
 {
 
+    /**
+     * @var TodoService
+     */
+    private $todoService;
+
+    function __construct()
+    {
+        $this->todoService = new TodoService();
+    }
+
     public function index()
     {
-        return Auth::user()->todos;
+        return $this->todoService->getAll();
     }
 
     public function show(Todo $todo){
         $this->authorize('view', $todo);
-        return $todo;
+        return $this->todoService->getOne($todo);
     }
 
     public function store(StoreTodos $request)
     {
-        return Todo::create(array_merge(['user_id'=>Auth::id()], $request->validated()));
+        return $this->todoService->addNew($request);
     }
 
     public function update(UpdateTodos $request, Todo $todo)
     {
-        $this->authorize('update', $todo);
-        $todo->update($request->validated());
-        return $todo;
+        return $this->todoService->update($request, $todo);
     }
 
     public function destroy(Todo $todo)
     {
-        $this->authorize('delete', $todo);
-        $todo->delete();
-
+        $this->todoService->delete($todo);
     }
 }
