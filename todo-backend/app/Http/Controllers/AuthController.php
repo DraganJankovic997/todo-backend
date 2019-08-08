@@ -31,7 +31,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        return $this->respond($this->userService->login($credentials));
+        return $this->userService->login($credentials);
     }
 
     /**
@@ -41,7 +41,7 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return $this->respond($this->userService->me());
+        return $this->userService->me();
     }
 
     /**
@@ -51,7 +51,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        return $this->respond($this->userService->logout());
+        return $this->userService->logout();
     }
 
     /**
@@ -61,12 +61,7 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respond($this->userService->refresh());
-    }
-
-    private function respond($json)
-    {
-        return response()->json($json);
+        return $this->userService->refresh();
     }
 
 
