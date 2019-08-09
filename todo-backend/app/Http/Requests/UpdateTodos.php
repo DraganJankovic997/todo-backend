@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Todo as Todo;
 
 class UpdateTodos extends FormRequest
 {
